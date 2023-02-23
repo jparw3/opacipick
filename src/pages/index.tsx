@@ -271,7 +271,7 @@ export default function Home() {
                 justifyContent="space-between"
                 alignItems="center"
               >
-                <FormLabel htmlFor="email-alerts" mb="0">
+                <FormLabel htmlFor="colourname" mb="0">
                   Colour name
                 </FormLabel>
                 <Switch
@@ -282,7 +282,7 @@ export default function Home() {
                   }}
                   isChecked={showColourName}
                   onChange={handleShowColourName}
-                  id="email-alerts"
+                  id="colourname"
                 />
               </FormControl>
             </MenuItem>
@@ -293,7 +293,7 @@ export default function Home() {
                 justifyContent="space-between"
                 alignItems="center"
               >
-                <FormLabel htmlFor="email-alerts" mb="0">
+                <FormLabel htmlFor="randomcolour" mb="0">
                   Random Colour Button
                 </FormLabel>
                 <Switch
@@ -304,7 +304,7 @@ export default function Home() {
                   }}
                   isChecked={showRandomColourButton}
                   onChange={handleShowRandomColourButton}
-                  id="email-alerts"
+                  id="randomcolour"
                 />
               </FormControl>
             </MenuItem>
