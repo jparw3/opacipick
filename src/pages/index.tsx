@@ -1,4 +1,5 @@
 import useKeyboard, { KeyCode, KeyMod } from "@/libs/use-keyboard";
+import { VscDebugRestart } from "react-icons/vsc";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import {
   Box,
@@ -27,6 +28,7 @@ import {
   SliderTrack,
   Switch,
   Text,
+  Tooltip,
   useDisclosure,
   VStack,
 } from "@chakra-ui/react";
@@ -45,6 +47,7 @@ export default function Home() {
 
   const [sliderValue, setSliderValue] = useState(50);
   const [showColourName, setShowColourName] = useState(false);
+  const [showRandomColourButton, setShowRandomColourButton] = useState(false);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -97,6 +100,14 @@ export default function Home() {
     localStorage.setItem("showColourName", showColourName ? "false" : "true");
   };
 
+  const handleShowRandomColourButton = () => {
+    setShowRandomColourButton(!showRandomColourButton);
+    localStorage.setItem(
+      "showRandomColourButton",
+      showRandomColourButton ? "false" : "true"
+    );
+  };
+
   const newColor =
     color +
     Math.round(sliderValue * 2.55)
@@ -115,12 +126,20 @@ export default function Home() {
         localStorage.setItem("showColourName", "false");
       }
 
+      if (!localStorage.getItem("showRandomColourButton")) {
+        localStorage.setItem("showRandomColourButton", "true");
+      }
+
       if (localStorage.getItem("showOnboarding") === "true") {
         onBoardingOnOpen();
       }
 
       if (localStorage.getItem("showColourName") === "true") {
         setShowColourName(true);
+      }
+
+      if (localStorage.getItem("showRandomColourButton") === "true") {
+        setShowRandomColourButton(true);
       }
     }
   }, []);
@@ -267,6 +286,28 @@ export default function Home() {
                 />
               </FormControl>
             </MenuItem>
+            <MenuItem>
+              <FormControl
+                w="full"
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                <FormLabel htmlFor="email-alerts" mb="0">
+                  Random Colour Button
+                </FormLabel>
+                <Switch
+                  sx={{
+                    "span.chakra-switch__track": {
+                      backgroundColor: color,
+                    },
+                  }}
+                  isChecked={showRandomColourButton}
+                  onChange={handleShowRandomColourButton}
+                  id="email-alerts"
+                />
+              </FormControl>
+            </MenuItem>
             <MenuItem onClick={shortCutsOnOpen} command="⇧S">
               Shortcuts
             </MenuItem>
@@ -284,7 +325,28 @@ export default function Home() {
             borderRadius="lg"
             overflow="hidden"
             boxShadow="lg"
+            position="relative"
           >
+            {showRandomColourButton && (
+              <Tooltip label="Generate new colour" placement="top">
+                <IconButton
+                  pos="absolute"
+                  top={0.5}
+                  right={0.5}
+                  onClick={() => {
+                    setColor(randomColor());
+                  }}
+                  variant="unstyled"
+                  display="flex"
+                  alignItems="center"
+                  color={oppositeColor}
+                  justifyContent="center"
+                  _hover={{ bg: "#0000001a" }}
+                  aria-label="random colour"
+                  icon={<VscDebugRestart />}
+                />
+              </Tooltip>
+            )}
             <Center
               cursor="pointer"
               height={"52"}
@@ -300,9 +362,11 @@ export default function Home() {
               <VStack w="full">
                 <HStack w="75%" justifyContent="space-between">
                   <Text cursor="default">{sliderValue}%</Text>
-                  <Button onClick={handleClick} variant="ghost">
-                    {newColor}
-                  </Button>
+                  <Tooltip label="Copy colour to clipboard">
+                    <Button onClick={handleClick} variant="ghost">
+                      {newColor}
+                    </Button>
+                  </Tooltip>
                 </HStack>
                 <Slider
                   value={sliderValue}
