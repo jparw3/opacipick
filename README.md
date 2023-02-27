@@ -7,7 +7,7 @@
 
 > Hexadecimal color code for transparency
 
-### ✨ [Demo](https://opacipick.jparw.xyz)
+### ✨ [Use Opacipick](https://opacipick.jparw.xyz)
 
 ## Creator
 
